@@ -124,6 +124,23 @@ def legend(s, items, y=7.05):
         x += 0.30 + 0.10 + min(1.9, 0.16 * len(txt) + 0.6)
 
 
+def htag(s, x, y, txt, color):
+    sp = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(x), Inches(y),
+                            Inches(0.52), Inches(0.30))
+    sp.fill.solid(); sp.fill.fore_color.rgb = WHITE
+    sp.line.color.rgb = color; sp.line.width = Pt(1.25)
+    sp.shadow.inherit = False
+    tf = sp.text_frame; tf.word_wrap = False
+    tf.vertical_anchor = MSO_ANCHOR.MIDDLE
+    tf.margin_left = Pt(1); tf.margin_right = Pt(1)
+    tf.margin_top = Pt(0); tf.margin_bottom = Pt(0)
+    p = tf.paragraphs[0]; p.alignment = PP_ALIGN.CENTER
+    r = p.add_run(); r.text = txt
+    r.font.size = Pt(10); r.font.bold = True
+    r.font.color.rgb = color; r.font.name = FONT
+    return sp
+
+
 def footer(s, text):
     box(s, 0.3, 6.62, SW - 0.6, 0.42, text, NAVY, WHITE, 10.5, True,
         MSO_SHAPE.RECTANGLE)
@@ -153,6 +170,9 @@ conn(s, bc(YB), tc(DM)); conn(s, bc(DM), tc(C1)); conn(s, bc(DM), tc(C2))
 conn(s, bc(YA), (tc(B1)[0]-0.4, tc(B1)[1]))
 conn(s, bc(C1), tc(B1)); conn(s, bc(C2), (tc(B1)[0]+0.4, tc(B1)[1]))
 conn(s, rc(B1), lc(B2)); conn(s, rc(B2), lc(B3))
+htag(s, 2.97, 2.19, "H1", GREEN)
+htag(s, 9.84, 2.19, "H2", RED)
+htag(s, 6.41, 3.10, "H3", AMBER)
 footer(s, "结论与政策：智能信贷触达让更多人借到钱——是否也让更多人陷进去？  金融AI消费者保护 · 共债治理")
 s.notes_slide.notes_text_frame.text = (
     "1. X 是 LLM 接入这一可识别技术冲击；2. 双机制：识别↑、劝说↑；"
@@ -186,7 +206,11 @@ C2 = box(s, 9.0, 5.00, 1.9, 0.42, "行为·内涵 同类人借贷恶化", LAMBER
 conn(s, bc(YB), tc(DM)); conn(s, rc(DM), lc(C1)); conn(s, rc(DM), lc(C2))
 W  = box(s, LX, 5.50, 4.4, 0.78,
          "调节变量 W（H4·异质性）\nIVR→LLM 智能化梯度（剂量响应）｜客户风险类型·征信分", PURPLE, size=10)
-conn(s, tc(W), (tc(W)[0], bc(M2)[1]+0.02), PURPLE, 1.3, dashed=True)
+conn(s, tc(W), (6.65, 3.64), PURPLE, 1.4, dashed=True)
+htag(s, 6.39, 2.69, "H1", GREEN)
+htag(s, 6.39, 3.49, "H2", RED)
+htag(s, 7.62, 4.26, "H3", AMBER)
+htag(s, 5.06, 4.40, "H4", PURPLE)
 footer(s, "控制 Z：征信分·历史多头·负债收入比·年龄·名单来源·活动类型·时段·地域　|　识别：以升级日为外生时点的 Stacked RD-in-time")
 legend(s, [("自变量X", NAVY), ("中介机制M", TEAL), ("因变量Y", RED),
            ("调节W", PURPLE), ("分解/识别", AMBER)])
@@ -265,7 +289,9 @@ Y3 = box(s, 1.85, 3.80, 9.6, 0.62,
 W3 = box(s, 1.85, 5.05, 9.6, 0.56,
          "调节 W·异质性：低收入 / 年轻 / 已多头 组效应更强", PURPLE, size=11)
 conn(s, bc(X3), tc(M3)); conn(s, bc(M3), tc(Y3))
-conn(s, tc(W3), bc(Y3), PURPLE, 1.3, dashed=True)
+conn(s, tc(W3), (6.65, 3.455), PURPLE, 1.4, dashed=True)
+label(s, 6.85, 3.95, 1.4, 0.3, "调节路径", 9, PURPLE, italic=True,
+      align=PP_ALIGN.LEFT)
 footer(s, "识别：高/低暴露区 × 前后 三重差分(DDD)　|　稳健：数字普惠指数连续处理 2SLS（到杭州距离/历史银行网点）+ PSM-DID")
 legend(s, [("自变量X", NAVY), ("中介机制M", TEAL), ("因变量Y", ORANGE),
            ("调节W", PURPLE)])
